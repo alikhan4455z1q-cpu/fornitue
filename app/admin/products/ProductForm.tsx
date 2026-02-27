@@ -3,14 +3,20 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Define types for color and product data
+interface Color {
+  name: string;
+  hex: string;
+}
+
 export default function ProductForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [name, setName] = useState(initialData?.name || '');
   const [price, setPrice] = useState(initialData?.price || '');
   const [image, setImage] = useState(initialData?.image || '');
-  const [sizes, setSizes] = useState(initialData?.sizes ? JSON.parse(initialData.sizes) : []);
-  const [colors, setColors] = useState(initialData?.colors ? JSON.parse(initialData.colors) : []);
+  const [sizes, setSizes] = useState<string[]>(initialData?.sizes ? JSON.parse(initialData.sizes) : []);
+  const [colors, setColors] = useState<Color[]>(initialData?.colors ? JSON.parse(initialData.colors) : []);
   const [description, setDescription] = useState(initialData?.description || '');
   const [material, setMaterial] = useState(initialData?.material || '');
   const [warranty, setWarranty] = useState(initialData?.warranty || '');
@@ -31,16 +37,22 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   };
 
   const addSize = () => setSizes([...sizes, '']);
-  const removeSize = (index: number) => setSizes(sizes.filter((_, i) => i !== index));
 
-  const handleColorChange = (index: number, field: string, value: string) => {
+  // ✅ Fixed: added explicit type for the unused parameter
+  const removeSize = (index: number) => 
+    setSizes(sizes.filter((_: string, i: number) => i !== index));
+
+  const handleColorChange = (index: number, field: keyof Color, value: string) => {
     const newColors = [...colors];
     newColors[index][field] = value;
     setColors(newColors);
   };
 
   const addColor = () => setColors([...colors, { name: '', hex: '#000000' }]);
-  const removeColor = (index: number) => setColors(colors.filter((_, i) => i !== index));
+
+  // ✅ Fixed: added explicit types for parameters
+  const removeColor = (index: number) => 
+    setColors(colors.filter((_: Color, i: number) => i !== index));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,7 +161,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">Colors</label>
-        {colors.map((color: any, index: number) => (
+        {colors.map((color: Color, index: number) => (
           <div key={index} className="flex gap-2 mb-2 items-center">
             <input
               type="text"
