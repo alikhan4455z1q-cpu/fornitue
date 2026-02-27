@@ -7,9 +7,9 @@ const productsFile = path.join(process.cwd(), 'data', 'products.json');
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> } // ✅ Changed to Promise
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params; // ✅ Await the params
+  const { slug } = await params;
 
   const categories = JSON.parse(fs.readFileSync(categoriesFile, 'utf8'));
   const category = categories.find((c: any) => c.slug === slug);

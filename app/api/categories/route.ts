@@ -1,15 +1,15 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
 const dataFile = path.join(process.cwd(), 'data', 'categories.json');
 
 export async function GET() {
-  const data = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
-  return NextResponse.json(data);
+  const categories = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+  return NextResponse.json(categories);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
   const categories = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
   const newId = categories.length > 0 ? categories[categories.length - 1].id + 1 : 1;

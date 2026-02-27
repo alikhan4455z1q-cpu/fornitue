@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
 const productsFile = path.join(process.cwd(), 'data', 'products.json');
 const categoriesFile = path.join(process.cwd(), 'data', 'categories.json');
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const categoryId = searchParams.get('categoryId');
 
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
   return NextResponse.json(productsWithCategory);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
   const products = JSON.parse(fs.readFileSync(productsFile, 'utf8'));
   const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;

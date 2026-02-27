@@ -43,11 +43,3 @@ export async function DELETE(
   fs.writeFileSync(dataFile, JSON.stringify(filtered, null, 2));
   return NextResponse.json({ success: true });
 }
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> } // or slug, etc.
-) {
-  const { id } = await params;
-  // ... rest of your logic
-}
