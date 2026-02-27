@@ -1,7 +1,9 @@
 'use client';
 
+import CategoryForm from './CategoryForm';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import CategoryForm from '../../CategoryForm';
+import CategoryForm from '../CategoryForm';
 
 export default function EditCategoryPage() {
   const { id } = useParams();
