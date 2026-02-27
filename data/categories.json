@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Beds",
+    "slug": "beds",
+    "image": "/images/category-beds-hero.jpg",
+    "thumbnail": "/images/category-beds-thumb.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Sofas",
+    "slug": "sofas",
+    "image": "/images/category-sofas-hero.jpg",
+    "thumbnail": "/images/category-sofas-thumb.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Mattresses",
+    "slug": "mattresses",
+    "image": "/images/category-mattresses-hero.jpg",
+    "thumbnail": "/images/category-mattresses-thumb.jpg"
+  },
+  {
+    "id": 4,
+    "name": "hero",
+    "slug": "sfuis",
+    "image": "/images/hero.jpg",
+    "thumbnail": "/images/hero.jpg"
+  },
+  {
+    "id": 5,
+    "name": "35345",
+    "slug": "34534",
+    "image": "/images/hero.jpg",
+    "thumbnail": "/images/hero.jpg"
+  },
+  {
+    "id": 6,
+    "name": "rwrwrwerwerwew",
+    "slug": "werwer",
+    "image": "/images/hero.jpg",
+    "thumbnail": "/images/hero.jpg"
+  }
+]

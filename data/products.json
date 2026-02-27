@@ -1,0 +1,49 @@
+[
+  {
+    "id": 1,
+    "name": "Beds",
+    "slug": "beds",
+    "image": "/images/category-beds-hero.jpg",
+    "thumbnail": "/images/category-beds-thumb.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Sofas",
+    "slug": "sofas",
+    "image": "/images/category-sofas-hero.jpg",
+    "thumbnail": "/images/category-sofas-thumb.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Mattresses",
+    "slug": "mattresses",
+    "image": "/images/category-mattresses-hero.jpg",
+    "thumbnail": "/images/category-mattresses-thumb.jpg"
+  },
+  {
+    "id": 4,
+    "name": "rthrtht",
+    "price": 121242,
+    "image": "/image/hero.jpg",
+    "sizes": "[\"te\"]",
+    "colors": "[]",
+    "description": "ryrtuy",
+    "material": "57",
+    "warranty": "6uut",
+    "inStock": true,
+    "categoryId": 2
+  },
+  {
+    "id": 5,
+    "name": "Sofa",
+    "price": 122,
+    "image": "/image/hero.jpg",
+    "sizes": "[\"king\"]",
+    "colors": "[{\"name\":\"\",\"hex\":\"#914646\"}]",
+    "description": "trutyi",
+    "material": "thtjg",
+    "warranty": "gjyfiy",
+    "inStock": true,
+    "categoryId": 2
+  }
+]
