@@ -19,26 +19,5 @@
     "slug": "mattresses",
     "image": "/images/category-mattresses-hero.jpg",
     "thumbnail": "/images/category-mattresses-thumb.jpg"
-  },
-  {
-    "id": 4,
-    "name": "hero",
-    "slug": "sfuis",
-    "image": "/images/hero.jpg",
-    "thumbnail": "/images/hero.jpg"
-  },
-  {
-    "id": 5,
-    "name": "35345",
-    "slug": "34534",
-    "image": "/images/hero.jpg",
-    "thumbnail": "/images/hero.jpg"
-  },
-  {
-    "id": 6,
-    "name": "rwrwrwerwerwew",
-    "slug": "werwer",
-    "image": "/images/hero.jpg",
-    "thumbnail": "/images/hero.jpg"
   }
 ]

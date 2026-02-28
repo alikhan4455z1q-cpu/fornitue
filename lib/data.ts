@@ -1,64 +1,45 @@
-import fs from 'fs';
-import path from 'path';
+import { prisma } from './prisma';
+import { Category, Product } from '@prisma/client';
 
-const categoriesFile = path.join(process.cwd(), 'data', 'categories.json');
-const productsFile = path.join(process.cwd(), 'data', 'products.json');
+// Helper to parse JSON fields (since Prisma returns strings for JSON fields)
+const parseProductFields = (product: any) => ({
+  ...product,
+  sizes: JSON.parse(product.sizes),
+  colors: JSON.parse(product.colors),
+});
 
-const readJSON = (file: string) => {
-  try {
-    const data = fs.readFileSync(file, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error(`Error reading ${file}:`, error);
-    return [];
-  }
-};
+export async function getCategories() {
+  return await prisma.category.findMany();
+}
 
-const parseProductFields = (product: any) => {
-  try {
-    return {
-      ...product,
-      sizes: typeof product.sizes === 'string' ? JSON.parse(product.sizes) : (product.sizes || []),
-      colors: typeof product.colors === 'string' ? JSON.parse(product.colors) : (product.colors || []),
-    };
-  } catch (error) {
-    console.error('Error parsing product fields for product:', product.id, error);
-    return product;
-  }
-};
+export async function getCategoryBySlug(slug: string) {
+  return await prisma.category.findUnique({ where: { slug } });
+}
 
-export const getCategories = () => {
-  return readJSON(categoriesFile);
-};
+export async function getProducts(categoryId?: number) {
+  const where = categoryId ? { categoryId } : {};
+  const products = await prisma.product.findMany({ where });
+  return products.map(parseProductFields);
+}
 
-export const getCategoryBySlug = (slug: string) => {
-  const categories = getCategories();
-  return categories.find((c: any) => c.slug === slug) || null;
-};
-
-export const getProducts = (categoryId?: number) => {
-  const products = readJSON(productsFile).map(parseProductFields);
-  if (categoryId) {
-    return products.filter((p: any) => p.categoryId === categoryId);
-  }
-  return products;
-};
-
-// ✅ Only one definition of getProductById
-export const getProductById = (id: number) => {
-  const products = readJSON(productsFile).map(parseProductFields);
-  const product = products.find((p: any) => p.id === id);
+export async function getProductById(id: number) {
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: { category: true },
+  });
   if (!product) return null;
-  const categories = getCategories();
-  const category = categories.find((c: any) => c.id === product.categoryId);
-  return { ...product, category };
-};
+  return {
+    ...parseProductFields(product),
+    category: product.category,
+  };
+}
 
-export const getProductsWithCategory = () => {
-  const products = readJSON(productsFile).map(parseProductFields);
-  const categories = getCategories();
-  return products.map((p: any) => ({
-    ...p,
-    category: categories.find((c: any) => c.id === p.categoryId) || null,
+export async function getProductsWithCategory() {
+  const products = await prisma.product.findMany({
+    include: { category: true },
+  });
+  return products.map(p => ({
+    ...parseProductFields(p),
+    category: p.category,
   }));
-};
+}
