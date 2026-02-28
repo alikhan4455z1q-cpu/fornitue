@@ -1,36 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const productsFile = path.join(process.cwd(), 'data', 'products.json');
-const categoriesFile = path.join(process.cwd(), 'data', 'categories.json');
+import { prisma } from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const categoryId = searchParams.get('categoryId');
+  try {
+    const { searchParams } = new URL(request.url);
+    const categoryId = searchParams.get('categoryId');
 
-  const products = JSON.parse(fs.readFileSync(productsFile, 'utf8'));
-  const categories = JSON.parse(fs.readFileSync(categoriesFile, 'utf8'));
+    const products = await prisma.product.findMany({
+      where: categoryId ? { categoryId: parseInt(categoryId) } : {},
+      include: { category: true },
+    });
 
-  let filtered = products;
-  if (categoryId) {
-    filtered = products.filter((p: any) => p.categoryId === parseInt(categoryId));
+    // Parse JSON fields (sizes, colors) for frontend
+    const parsedProducts = products.map(p => ({
+      ...p,
+      sizes: JSON.parse(p.sizes),
+      colors: JSON.parse(p.colors),
+    }));
+
+    return NextResponse.json(parsedProducts);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  const productsWithCategory = filtered.map((p: any) => ({
-    ...p,
-    category: categories.find((c: any) => c.id === p.categoryId) || null,
-  }));
-
-  return NextResponse.json(productsWithCategory);
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const products = JSON.parse(fs.readFileSync(productsFile, 'utf8'));
-  const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
-  const newProduct = { id: newId, ...body };
-  products.push(newProduct);
-  fs.writeFileSync(productsFile, JSON.stringify(products, null, 2));
-  return NextResponse.json(newProduct, { status: 201 });
+  try {
+    const body = await request.json();
+    const { name, price, image, sizes, colors, description, material, warranty, inStock, categoryId } = body;
+
+    const product = await prisma.product.create({
+      data: {
+        name,
+        price: parseFloat(price),
+        image,
+        sizes: JSON.stringify(sizes),
+        colors: JSON.stringify(colors),
+        description,
+        material,
+        warranty,
+        inStock,
+        categoryId: parseInt(categoryId),
+      },
+    });
+
+    return NextResponse.json(product, { status: 201 });
+  } catch (error) {
+    console.error('Error creating product:', error);
+    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
+  }
 }

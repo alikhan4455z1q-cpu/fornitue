@@ -1,7 +1,7 @@
 import { getCategories, getProductsWithCategory } from '@/lib/data';
 
 export default async function sitemap() {
-  const baseUrl = 'https://yourdomain.com'; // Replace with your actual Vercel URL
+  const baseUrl = 'https://fornitue-mep1.vercel.app/'; // Replace with your actual Vercel URL
 
   // Static pages (always safe)
   const staticPages = [
@@ -12,7 +12,7 @@ export default async function sitemap() {
 
   // Categories - filter out any without slug
   const categories = getCategories();
-  const categoryPages = categories
+  const categoryPages = (await categories)
     .filter((cat: any) => cat && cat.slug) // ✅ Ensure category and slug exist
     .map((cat: any) => ({
       url: `${baseUrl}/category/${cat.slug}`,
@@ -23,7 +23,7 @@ export default async function sitemap() {
 
   // Products - get all products with their category
   const products = getProductsWithCategory();
-  const productPages = products
+  const productPages = (await products)
     .filter((prod: any) => prod && prod.category && prod.category.slug) // ✅ Ensure product, category, and slug exist
     .map((prod: any) => ({
       url: `${baseUrl}/category/${prod.category.slug}/${prod.id}`,
